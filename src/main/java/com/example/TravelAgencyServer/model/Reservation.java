@@ -5,10 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
@@ -27,8 +24,8 @@ public class Reservation {
     @JsonDeserialize(using = LocalDateDeserializer.class)
     private LocalDate reservationDate;
 
-    @ManyToMany(mappedBy = "reservations")
-    private Set<User> users = new HashSet<>();
+    @ManyToOne
+    private User user;
 
     public Integer getReservationId() {
         return reservationId;
@@ -70,11 +67,11 @@ public class Reservation {
         this.reservationDate = reservationDate;
     }
 
-    public Set<User> getUsers() {
-        return users;
+    public User getUser() {
+        return user;
     }
 
-    public void setUsers(Set<User> users) {
-        this.users = users;
+    public void setUser(User user) {
+        this.user = user;
     }
 }

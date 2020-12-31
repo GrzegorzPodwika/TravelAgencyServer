@@ -5,20 +5,20 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-public class Attraction {
+public class AdditionalService {
     @Id
     @GeneratedValue
-    private Integer attractionId;
+    private Integer additionalServiceId;
 
     private String name;
     private String description;
 
-    public Integer getAttractionId() {
-        return attractionId;
+    public Integer getAdditionalServiceId() {
+        return additionalServiceId;
     }
 
-    public void setAttractionId(Integer attractionId) {
-        this.attractionId = attractionId;
+    public void setAdditionalServiceId(Integer additionalServiceId) {
+        this.additionalServiceId = additionalServiceId;
     }
 
     public String getName() {
@@ -31,10 +31,6 @@ public class Attraction {
 
     public String getDescription() {
         return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
 }

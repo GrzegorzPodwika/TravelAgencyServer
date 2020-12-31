@@ -7,15 +7,6 @@ import java.util.Set;
 @Entity
 public class User extends Person{
 
-    @ManyToMany(cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE
-    })
-    @JoinTable(name = "user_reservation",
-            joinColumns = @JoinColumn(name = "personId"),
-            inverseJoinColumns = @JoinColumn(name = "reservationId"))
-    private Set<Reservation> reservations = new HashSet<>();
-
     public User() {
     }
 
@@ -30,24 +21,6 @@ public class User extends Person{
         this.zipcode = zipcode;
         this.phoneNumber = phoneNumber;
         this.email = email;
-    }
-
-    public Set<Reservation> getReservations() {
-        return reservations;
-    }
-
-    public void setReservations(Set<Reservation> reservations) {
-        this.reservations = reservations;
-    }
-
-    public void addReservation(Reservation reservation) {
-        reservations.add(reservation);
-        reservation.getUsers().add(this);
-    }
-
-    public void removeReservation(Reservation reservation) {
-        reservations.remove(reservation);
-        reservation.getUsers().remove(this);
     }
 
     @Override

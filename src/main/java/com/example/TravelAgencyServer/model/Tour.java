@@ -1,5 +1,6 @@
 package com.example.TravelAgencyServer.model;
 
+import com.example.TravelAgencyServer.service.TourService;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
@@ -9,6 +10,8 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
+
+//TODO zmienic wszystkie z manytomany na onetomany z posredniczoca tabela
 
 @Entity
 public class Tour {
@@ -30,6 +33,8 @@ public class Tour {
     @JsonDeserialize(using = LocalDateDeserializer.class)
     private LocalDate arrivalDate;
 
+    private String imgName;
+
     @ManyToOne
     private Employee employee;
 
@@ -42,25 +47,17 @@ public class Tour {
     @ManyToOne
     private TourGuide tourGuide;
 
-    @ManyToMany(cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE
-    })
-    @JoinTable(name = "tour_service",
-            joinColumns = @JoinColumn(name = "tourId"),
-            inverseJoinColumns = @JoinColumn(name = "serviceId")
-    )
-    private Set<TourService> tourServices = new HashSet<>();
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "attraction_tour",
+            joinColumns = @JoinColumn(name = "tour_id"),
+            inverseJoinColumns = @JoinColumn(name = "attraction_id"))
+    private Set<Attraction> attractions;
 
-    @ManyToMany(cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE
-    })
-    @JoinTable(name = "tour_attraction",
-            joinColumns = @JoinColumn(name = "tourId"),
-            inverseJoinColumns = @JoinColumn(name = "attractionId")
-    )
-    private Set<Attraction> attractions = new HashSet<>();
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "additional_service_tour",
+    joinColumns = @JoinColumn(name = "tour_id"),
+    inverseJoinColumns = @JoinColumn(name = "additional_service_id"))
+    private Set<AdditionalService> additionalServices;
 
     public Integer getTourId() {
         return tourId;
@@ -126,6 +123,14 @@ public class Tour {
         this.arrivalDate = arrivalDate;
     }
 
+    public String getImgName() {
+        return imgName;
+    }
+
+    public void setImgName(String imgName) {
+        this.imgName = imgName;
+    }
+
     public Employee getEmployee() {
         return employee;
     }
@@ -158,14 +163,6 @@ public class Tour {
         this.tourGuide = tourGuide;
     }
 
-    public Set<TourService> getServices() {
-        return tourServices;
-    }
-
-    public void setServices(Set<TourService> tourServices) {
-        this.tourServices = tourServices;
-    }
-
     public Set<Attraction> getAttractions() {
         return attractions;
     }
@@ -174,23 +171,46 @@ public class Tour {
         this.attractions = attractions;
     }
 
-    public void addService(TourService tourService) {
-        tourServices.add(tourService);
-        tourService.getTours().add(this);
+    public Set<AdditionalService> getAdditionalServices() {
+        return additionalServices;
     }
 
-    public void removeService(TourService tourService) {
-        tourServices.remove(tourService);
-        tourService.getTours().remove(this);
+    public void setAdditionalServices(Set<AdditionalService> additionalServices) {
+        this.additionalServices = additionalServices;
+    }
+
+    public void addService(AdditionalService additionalService) {
+        additionalServices.add(additionalService);
+    }
+
+    public void removeService(AdditionalService additionalService) {
+        additionalServices.remove(additionalService);
     }
 
     public void addAttraction(Attraction attraction) {
         attractions.add(attraction);
-        attraction.getTours().add(this);
     }
 
     public void removeAttraction(Attraction attraction) {
         attractions.remove(attraction);
-        attraction.getTours().remove(this);
+    }
+
+    @Override
+    public String toString() {
+        return "Tour{" +
+                "tourId=" + tourId +
+                ", tourName='" + tourName + '\'' +
+                ", country='" + country + '\'' +
+                ", availableTickets=" + availableTickets +
+                ", takenTickets=" + takenTickets +
+                ", price=" + price +
+                ", departureDate=" + departureDate +
+                ", arrivalDate=" + arrivalDate +
+                ", imgName='" + imgName + '\'' +
+                ", employee=" + employee +
+                ", hotel=" + hotel +
+                ", transport=" + transport +
+                ", tourGuide=" + tourGuide +
+                '}';
     }
 }

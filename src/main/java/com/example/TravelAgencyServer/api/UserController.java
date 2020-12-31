@@ -1,15 +1,17 @@
 package com.example.TravelAgencyServer.api;
 
+import com.example.TravelAgencyServer.model.LoginResponse;
 import com.example.TravelAgencyServer.model.User;
 import com.example.TravelAgencyServer.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 //TODO dodac do wszystkich entity equals hashcode itd.
 
 @RestController
-public class UserController {
+public class UserController implements Dao<User>{
 
     private final UserService userService;
 
@@ -17,30 +19,43 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping(path = "/addUser")
+    @PostMapping("/loginUser")
     public @ResponseBody
-    int addUser(@RequestBody User user) {
-        System.out.println(user);
-        return userService.addUser(user);
+    User loginUser(@RequestParam("nick") String nick,@RequestParam("password") String password) {
+        return userService.findUserByNickAndPassword(nick, password);
     }
 
-    @PostMapping(path = "/loginUser")
+    @Override
+    @GetMapping("/getUser")
     public @ResponseBody
-    User loginUser(@RequestParam("nick") String nick, @RequestParam("password") String password) {
-        System.out.println("Received nick = " + nick + "  pass = " + password);
-        return userService.loginUser(nick, password);
+    Optional<User> get(@RequestBody Integer id) {
+        return userService.get(id);
     }
 
-    @GetMapping(path = "/getAllUsers")
+    @Override
+    @GetMapping("/getAllUsers")
     public @ResponseBody
-    List<User> getAllUsers() {
-        return userService.findAllUsers();
+    List<User> getAll() {
+        return userService.getAll();
     }
 
+    @Override
+    @PostMapping(path = "/saveUser")
+    public @ResponseBody
+    int save(@RequestBody User user) {
+        return userService.save(user);
+    }
+
+    @Override
     @PostMapping(path = "/updateUser")
     public @ResponseBody
-    User updateUser(@RequestBody User userToUpdate) {
-        return userService.updateUser(userToUpdate);
+    User update(@RequestBody User user) {
+        return userService.update(user);
     }
 
+    @Override
+    @PostMapping(path = "/deleteUser")
+    public void delete(@RequestBody User user) {
+        userService.delete(user);
+    }
 }

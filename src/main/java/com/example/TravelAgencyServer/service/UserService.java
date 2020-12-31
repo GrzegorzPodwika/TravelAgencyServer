@@ -1,5 +1,6 @@
 package com.example.TravelAgencyServer.service;
 
+import com.example.TravelAgencyServer.api.Dao;
 import com.example.TravelAgencyServer.dao.UserRepository;
 import com.example.TravelAgencyServer.model.User;
 import com.example.TravelAgencyServer.utils.CollectionUtils;
@@ -8,9 +9,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
-public class UserService {
+public class UserService implements Dao<User> {
     private final UserRepository userRepository;
 
     @Autowired
@@ -18,26 +20,33 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public int addUser(User user) {
+    public User findUserByNickAndPassword(String nick, String password) {
+        return userRepository.findUserByNickAndPassword(nick, password);
+    }
+
+    @Override
+    public Optional<User> get(Integer id) {
+        return userRepository.findById(id);
+    }
+
+    @Override
+    public List<User> getAll() {
+        return CollectionUtils.makeList(userRepository.findAll());
+    }
+
+    @Override
+    public int save(User user) {
         userRepository.save(user);
         return 1;
     }
 
-    public User loginUser(String nick, String password) {
-        var searchUser = userRepository.findUserByNickAndPassword(nick, password);
-        if (searchUser.isPresent()) {
-            System.out.println("User has been found" + searchUser.get().getNick());
-        } else {
-            System.out.println("User == null");
-        }
-        return searchUser.orElse(null);
+    @Override
+    public User update(User user) {
+        return userRepository.save(user);
     }
 
-    public List<User> findAllUsers() {
-        return CollectionUtils.makeList(userRepository.findAll());
-    }
-
-    public User updateUser(User userToUpdate) {
-        return userRepository.save(userToUpdate);
+    @Override
+    public void delete(User user) {
+        userRepository.delete(user);
     }
 }
