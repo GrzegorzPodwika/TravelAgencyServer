@@ -3,6 +3,7 @@ package com.example.TravelAgencyServer.service;
 import com.example.TravelAgencyServer.api.Dao;
 import com.example.TravelAgencyServer.dao.ReservationRepository;
 import com.example.TravelAgencyServer.model.Reservation;
+import com.example.TravelAgencyServer.model.User;
 import com.example.TravelAgencyServer.utils.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,10 @@ public class ReservationService implements Dao<Reservation> {
         return CollectionUtils.makeList(reservationRepository.findAll());
     }
 
+    public List<Reservation> getAllByUser(User user) {
+        return reservationRepository.findByUser(user);
+    }
+
     @Override
     public int save(Reservation reservation) {
         reservationRepository.save(reservation);
@@ -42,6 +47,6 @@ public class ReservationService implements Dao<Reservation> {
 
     @Override
     public void delete(Reservation reservation) {
-        reservationRepository.save(reservation);
+        reservationRepository.delete(reservation);
     }
 }

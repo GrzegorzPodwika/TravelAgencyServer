@@ -29,9 +29,6 @@ public class Payment {
     @JsonDeserialize(using = LocalDateDeserializer.class)
     private LocalDate deadlineDate;
 
-    @OneToOne
-    private Reservation reservation;
-
     public Integer getPaymentId() {
         return paymentId;
     }
@@ -78,13 +75,5 @@ public class Payment {
 
     public void setDeadlineDate(LocalDate deadlineDate) {
         this.deadlineDate = deadlineDate;
-    }
-
-    public Reservation getReservation() {
-        return reservation;
-    }
-
-    public void setReservation(Reservation reservation) {
-        this.reservation = reservation;
     }
 }

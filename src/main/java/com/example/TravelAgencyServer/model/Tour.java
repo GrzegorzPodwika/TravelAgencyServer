@@ -47,13 +47,23 @@ public class Tour {
     @ManyToOne
     private TourGuide tourGuide;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = {
+            CascadeType.MERGE,
+            CascadeType.DETACH,
+            CascadeType.PERSIST,
+            CascadeType.REFRESH
+    })
     @JoinTable(name = "attraction_tour",
             joinColumns = @JoinColumn(name = "tour_id"),
             inverseJoinColumns = @JoinColumn(name = "attraction_id"))
     private Set<Attraction> attractions;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = {
+            CascadeType.MERGE,
+            CascadeType.DETACH,
+            CascadeType.PERSIST,
+            CascadeType.REFRESH
+    })
     @JoinTable(name = "additional_service_tour",
     joinColumns = @JoinColumn(name = "tour_id"),
     inverseJoinColumns = @JoinColumn(name = "additional_service_id"))

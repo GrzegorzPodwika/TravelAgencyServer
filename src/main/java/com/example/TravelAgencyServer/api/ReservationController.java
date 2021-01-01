@@ -1,6 +1,7 @@
 package com.example.TravelAgencyServer.api;
 
 import com.example.TravelAgencyServer.model.Reservation;
+import com.example.TravelAgencyServer.model.User;
 import com.example.TravelAgencyServer.service.ReservationService;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,6 +30,13 @@ public class ReservationController implements Dao<Reservation>{
         return reservationService.getAll();
     }
 
+
+    @PostMapping("/getAllReservationsByUser")
+    public @ResponseBody
+    List<Reservation> getAllByUser(@RequestBody User user) {
+        return reservationService.getAllByUser(user);
+    }
+
     @Override
     @PostMapping("/saveReservation")
     public @ResponseBody
@@ -46,6 +54,7 @@ public class ReservationController implements Dao<Reservation>{
     @Override
     @PostMapping("/deleteReservation")
     public void delete(@RequestBody Reservation reservation) {
+        System.out.println(reservation);
         reservationService.delete(reservation);
     }
 }

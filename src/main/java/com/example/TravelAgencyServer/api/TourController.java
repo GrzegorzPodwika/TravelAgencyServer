@@ -48,6 +48,8 @@ public class TourController implements Dao<Tour>{
     @Override
     @PostMapping(path = "/deleteTour")
     public void delete(@RequestBody Tour tour) {
+        System.out.println(tour);
+        System.out.println("Przerwa");
         tourService.delete(tour);
     }
 }

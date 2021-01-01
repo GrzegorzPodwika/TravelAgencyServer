@@ -7,8 +7,6 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 public class Reservation {
@@ -18,6 +16,7 @@ public class Reservation {
     private Integer reservationId;
     private String status;
     private int numberOfSeats;
+    private int numberOfTickets;
     private double totalPrice;
 
     @JsonSerialize(using = LocalDateSerializer.class)
@@ -26,6 +25,17 @@ public class Reservation {
 
     @ManyToOne
     private User user;
+
+    @ManyToOne(cascade = {
+            CascadeType.MERGE,
+            CascadeType.DETACH,
+            CascadeType.PERSIST,
+            CascadeType.REFRESH
+    })
+    private Tour tour;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private Payment payment;
 
     public Integer getReservationId() {
         return reservationId;
@@ -51,6 +61,22 @@ public class Reservation {
         this.numberOfSeats = numberOfSeats;
     }
 
+    public int getNumberOfTickets() {
+        return numberOfTickets;
+    }
+
+    public void setNumberOfTickets(int numberOfTickets) {
+        this.numberOfTickets = numberOfTickets;
+    }
+
+    public Payment getPayment() {
+        return payment;
+    }
+
+    public void setPayment(Payment payment) {
+        this.payment = payment;
+    }
+
     public double getTotalPrice() {
         return totalPrice;
     }
@@ -73,5 +99,24 @@ public class Reservation {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Tour getTour() {
+        return tour;
+    }
+
+    public void setTour(Tour tour) {
+        this.tour = tour;
+    }
+
+    @Override
+    public String toString() {
+        return "Reservation{" +
+                "reservationId=" + reservationId +
+                ", status='" + status + '\'' +
+                ", numberOfSeats=" + numberOfSeats +
+                ", totalPrice=" + totalPrice +
+                ", reservationDate=" + reservationDate +
+                '}';
     }
 }
