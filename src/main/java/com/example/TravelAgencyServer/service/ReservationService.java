@@ -3,6 +3,7 @@ package com.example.TravelAgencyServer.service;
 import com.example.TravelAgencyServer.api.Dao;
 import com.example.TravelAgencyServer.dao.ReservationRepository;
 import com.example.TravelAgencyServer.model.Reservation;
+import com.example.TravelAgencyServer.model.Tour;
 import com.example.TravelAgencyServer.model.User;
 import com.example.TravelAgencyServer.utils.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,10 @@ public class ReservationService implements Dao<Reservation> {
 
     public List<Reservation> getAllByUser(User user) {
         return reservationRepository.findByUser(user);
+    }
+
+    public List<Reservation> getAllByTour(Tour tour) {
+        return reservationRepository.findByTour(tour);
     }
 
     @Override

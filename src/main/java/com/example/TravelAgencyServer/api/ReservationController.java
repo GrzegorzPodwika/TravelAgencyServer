@@ -1,6 +1,7 @@
 package com.example.TravelAgencyServer.api;
 
 import com.example.TravelAgencyServer.model.Reservation;
+import com.example.TravelAgencyServer.model.Tour;
 import com.example.TravelAgencyServer.model.User;
 import com.example.TravelAgencyServer.service.ReservationService;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +36,12 @@ public class ReservationController implements Dao<Reservation>{
     public @ResponseBody
     List<Reservation> getAllByUser(@RequestBody User user) {
         return reservationService.getAllByUser(user);
+    }
+
+    @PostMapping("/getAllReservationsByTour")
+    public @ResponseBody
+    List<Reservation> getAllByTour(@RequestBody Tour tour) {
+        return reservationService.getAllByTour(tour);
     }
 
     @Override
