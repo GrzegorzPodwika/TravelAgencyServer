@@ -30,7 +30,7 @@ public class TransportController implements Dao<Transport>{
     }
 
     @Override
-    @PostMapping(path = "/addTransport")
+    @PostMapping(path = "/saveTransport")
     public @ResponseBody
     int save(@RequestBody Transport transport) {
         return transportService.save(transport);
