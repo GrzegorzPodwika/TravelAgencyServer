@@ -1,9 +1,6 @@
 package com.example.TravelAgencyServer.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Entity
 public class Transport {
@@ -15,7 +12,12 @@ public class Transport {
     private double journeyTime;
     private String journeyDescription;
 
-    @ManyToOne
+    @ManyToOne(cascade = {
+            CascadeType.MERGE,
+            CascadeType.DETACH,
+            CascadeType.PERSIST,
+            CascadeType.REFRESH
+    })
     private Carrier carrier;
 
     public Integer getTransportId() {
